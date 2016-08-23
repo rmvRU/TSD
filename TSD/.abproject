@@ -1,0 +1,45 @@
+{
+  "ProjectName": "TSD",
+  "ProjectGuid": "be6c7a61-dda0-44cc-afde-96654a8f6095",
+  "projectVersion": 1,
+  "AppIdentifier": "com.telerik.TSD",
+  "DisplayName": "TSD",
+  "Author": "",
+  "Description": "TSD",
+  "BundleVersion": "1.0",
+  "AndroidVersionCode": "1",
+  "iOSDeviceFamily": [
+    "1",
+    "2"
+  ],
+  "iOSBackgroundMode": [],
+  "ProjectTypeGuids": "{070BCB52-5A75-4F8C-A973-144AF0EAFCC9}",
+  "FrameworkVersion": "4.0.0",
+  "AndroidPermissions": [
+    "android.permission.INTERNET"
+  ],
+  "DeviceOrientations": [
+    "Portrait",
+    "Landscape"
+  ],
+  "AndroidHardwareAcceleration": "true",
+  "iOSStatusBarStyle": "Default",
+  "Framework": "Cordova",
+  "WP8TileTitle": "",
+  "WP8Publisher": "",
+  "WP8Capabilities": [
+    "ID_CAP_NETWORKING",
+    "ID_CAP_WEBBROWSERCOMPONENT"
+  ],
+  "WP8Requirements": [],
+  "WP8PublisherID": "{c9a4d449-4b58-46e7-8475-06ba1ddb91c9}",
+  "WP8ProductID": "{85a72ef7-58d5-4b21-88ae-4b375bda8bce}",
+  "WPSdk": "8.0",
+  "WP8PackageIdentityName": "1234Telerik.TSD",
+  "WP8WindowsPublisherName": "CN=Telerik",
+  "WP8SupportedResolutions": [
+    "ID_RESOLUTION_WVGA",
+    "ID_RESOLUTION_WXGA",
+    "ID_RESOLUTION_HD720P"
+  ]
+}
