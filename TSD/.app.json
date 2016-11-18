@@ -19,17 +19,44 @@
     },
     {
       "type": "kendo-ui-mobile:view",
-      "name": "contactsView",
-      "components": [],
-      "title": "Contacts",
-      "addToNavigation": true,
-      "icon": "contacts"
+      "name": "authenticationView",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:authentication",
+          "name": "authenticationViewModel",
+          "dataProvider": "json",
+          "enableRegistration": true,
+          "gotoRegisterLabel": "Рег",
+          "registerEmailLabel": "Email",
+          "registerPasswordLabel": "Password",
+          "registerNameLabel": "Name",
+          "registerLabel": "Register",
+          "registerRedirect": "homeView",
+          "gotoSigninLabel": "Sign In",
+          "enableLogout": false,
+          "enableRememberme": false,
+          "emailLabel": "Логин",
+          "passwordLabel": "Пароль",
+          "signinLabel": "ОК",
+          "signinRedirect": "homeView"
+        }
+      ],
+      "title": "Вход",
+      "addToNavigation": false
     }
   ],
-  "dataProviders": [],
+  "dataProviders": [
+    {
+      "type": "kendo-ui-mobile:dataProvider",
+      "name": "json",
+      "title": "JSON Data Service",
+      "source": "json",
+      "url": "http://10.8.1.68:8904/"
+    }
+  ],
   "name": "kendoUiMobileApp",
   "navigation": "drawer",
-  "view": "homeView",
+  "view": "authenticationView",
   "skin": "nova",
   "skinMainColor": "#32364c",
   "skinTextColor": "#ffffff",
