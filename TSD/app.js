@@ -7,15 +7,14 @@
 
     var bootstrap = function () {
         $(function () {
-
-            var s = window.localStorage;
-            app.service_url = (s.getItem("service-url") != null) ? s.getItem("service-url") : "http://10.8.1.68:8904/";
-
-
             app.mobileApp = new kendo.mobile.Application(document.body, {
                 skin: 'nova',
                 initial: 'components/authenticationView/view.html'
             });
+            app.url='http://10.9.0.16:8904';
+            app.login_data=hackedLogin(app.url);
+            app.pmTask=new PmTask(app.url);
+            app.pmTask.pm_getTasks();
         });
     };
 
@@ -52,9 +51,6 @@
 
     window.app = app;
 
-
-
-
     app.isOnline = function () {
         if (!navigator || !navigator.connection) {
             return true;
@@ -62,7 +58,6 @@
             return navigator.connection.type !== 'none';
         }
     };
-
 
     app.openLink = function (url) {
         if (url.substring(0, 4) === 'geo:' && device.platform === 'iOS') {
@@ -76,8 +71,8 @@
         }
     };
 
-    // start kendo binders
-    // end kendo binders
+    /// start appjs functions
+    /// end appjs functions
     app.showFileUploadName = function (itemViewName) {
         $('.' + itemViewName).off('change', 'input[type=\'file\']').on('change', 'input[type=\'file\']', function (event) {
             var target = $(event.target),
@@ -105,18 +100,16 @@
         });
     };
 
-}());
+} ());
 
 // START_CUSTOM_CODE_kendoUiMobileApp
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 app.getUser = function (login, password) {
     var url = '/login.asp?login=' + login + '&password=' + password;
-    var d = new DataTable;
+    var d = new DataTable();
     d.getData(url);
     return d
 };
-
-
 
 app.UserInfoViewModel = kendo.observable({
     name: '',
@@ -131,7 +124,6 @@ app.UserInfoViewModel = kendo.observable({
             return false;
         }
 
-
         return true;
     },
     signin: function () {
@@ -141,7 +133,7 @@ app.UserInfoViewModel = kendo.observable({
         alert(d.length);
     },
 
-    register: function () {},
+    register: function () { },
     toggleView: function () {
         var model = authenticationViewModel;
         model.set('errorMessage', '');
@@ -151,7 +143,5 @@ app.UserInfoViewModel = kendo.observable({
         init();
     }
 });
-
-
 
 // END_CUSTOM_CODE_kendoUiMobileApp

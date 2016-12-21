@@ -1,5 +1,5 @@
-<div data-role="view" data-title="Вход" data-layout="main-nonav" data-model="app.authenticationView" data-show="app.authenticationView.onShow" data-after-show="app.authenticationView.afterShow">
-    <div class="signin-view">
+<div data-role="view" data-title="Вход" data-layout="main-nonav" data-model="app.authenticationView" data-show="app.authenticationView.onShow" data-after-show="app.authenticationView.afterShow" id="authenticationViewScreen" class="screen">
+    <div class="signin-view screen__content screen__content--signin">
         <form>
             <ul data-role="listview" data-style="inset">
                 <li>
@@ -16,12 +16,15 @@
 
             <div class="button-group button-group-vertical">
                 <a data-role="button" class="primary" data-bind="events: { click: authenticationViewModel.signin }">ОК</a>
+
+                <a data-role="button" data-bind="events: { click: authenticationViewModel.toggleView }">Рег</a>
+
             </div>
 
             <span class="status" data-bind="text: authenticationViewModel.errorMessage"></span>
         </form>
     </div>
-    <div class="signup-view" style="display:none;">
+    <div class="signup-view screen__content screen__content--signup" style="display:none;">
         <form>
             <ul data-role="listview" data-style="inset">
                 <li>

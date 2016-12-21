@@ -1,3 +1,96 @@
+function PmTask(url) {
+    this.url = url;
+    this.connector = new _connector(url);
+    this.pm_getTasks = function () {
+        var params = [
+            {name:"resource", type:"c", value:"RES000183"}
+        ];
+        this.data = this.connector.execute_sp('pm_tsd_GetTasks', params, true);
+    };
+
+
+}
+
+
+function hackedLogin(url) {
+    var c = new _connector(url);
+    /*
+    var d = c._execute_sp('op_tsd_getUserInfo'
+        , [{ name: "login", type: "c", value: "0183" }
+            , { name: "password", type: "c", value: "" }
+        ], true
+    )
+    */
+    url+='/login.asp?login=0183';
+    var d = c._getData(url, true);
+    return d.lines;
+}
+
+function _sql_param(name, type, value) {
+    this.name = name;
+    this.value = value;
+    this.type = type;
+    return this
+}
+
+function _connector(url) {
+    this.url = url;
+    this.execute_sp = function (name, params, getData) {
+        var url = this.url;
+        url += '/sql_wrapper.asp?__sp=' + name;
+        for (var i = 0; i < params.length; i++) {
+            url += '&_' + params[i].type + params[i].name + '=' + params[i].value;
+        };
+        console.log(url);
+
+        if (getData) {
+            return this._getData(url);
+        }
+        else
+            return this._get(url);
+    };
+
+    this._runCommand = function (url) {
+        var request = $.ajax({ url: url, async: true });
+        request.done(function (data) {
+            self.returnedData = data;
+            self.updateResult = self.processUpdateResults(data);
+        });
+        request.fail(function (data) {
+            self.returnedData = data;
+            self.lastError = "error on loading resource " + url;
+            self.updateResult = false;
+        });
+        return this.updateResult;
+    };
+    this._getData = function (url) {
+        console.log(url);
+        var d = new DataTable();
+        d.getData(url);
+        return d;
+    };
+
+    this.processUpdateResults = function (data) {
+        var errors = $("errors", data);
+        if (errors.length != 0) {
+            var error = $("error", errors);
+            var error_text = '';
+            for (var i = 0; i < error.length; i++) {
+                error_text += $(error[i]).attr("description");
+                error_text += '<br/>' + $(error[i]).attr("sql");
+
+            }
+            this.lastError = error_text;
+            return false;
+        }
+        return true;
+
+    };
+    return this;
+}
+
+
+
 function DataTable() {
     this.lines = [];
     this.url = '';
@@ -77,6 +170,7 @@ function DataTable() {
         });
         var self = this;
         this.getDataSuccess = false;
+        //alert(url);
         //$(this).trigger('beforeLoading');	
         request.done(function (data) {
             //if (self.testMode==true) alert(data);;//!!!
@@ -88,8 +182,10 @@ function DataTable() {
         });
         request.fail(function (data) {
             self.lastError = "error on loading resource " + url;
+            console.log(self.lastError)
             $(self).trigger('onError');
             self.getDataSuccess = false;
+
         });
         return (this.getDataSuccess);
     };
@@ -128,5 +224,5 @@ function DataTable() {
         }
         return (this);
     }
-    this.next = function (step) {};
+    this.next = function (step) { };
 }

@@ -1,41 +1,44 @@
 'use strict';
 
 app.authenticationView = kendo.observable({
-    onShow: function () {},
-    afterShow: function () {}
+    onShow: function() {},
+    afterShow: function() {}
 });
 
 // START_CUSTOM_CODE_authenticationView
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
 
 // END_CUSTOM_CODE_authenticationView
-(function (parent) {
+(function(parent) {
     var
         authenticationViewModel = kendo.observable({
             displayName: '',
             email: '',
             password: '',
             errorMessage: '',
-            validateData: function (data) {
+            validateData: function(data) {
                 var model = authenticationViewModel;
 
-                if (!data.email) {
-                    model.set('errorMessage', 'Введите логин');
+                if (!data.email && !data.password) {
+                    model.set('errorMessage', 'Missing credentials.');
                     return false;
                 }
 
+                if (!data.email) {
+                    model.set('errorMessage', 'Missing username or email.');
+                    return false;
+                }
+
+                if (!data.password) {
+                    model.set('errorMessage', 'Missing password.');
+                    return false;
+                }
 
                 return true;
             },
-            signin: function () {
-                if (!parent.authenticationViewModel.validateData(parent.authenticationViewModel)) return;
-                alert("OK");
-
-
-            },
-
-            register: function () {},
-            toggleView: function () {
+            signin: function() {},
+            register: function() {},
+            toggleView: function() {
                 var model = authenticationViewModel;
                 model.set('errorMessage', '');
 
@@ -46,7 +49,7 @@ app.authenticationView = kendo.observable({
         });
 
     parent.set('authenticationViewModel', authenticationViewModel);
-    parent.set('afterShow', function (e) {
+    parent.set('afterShow', function(e) {
         if (e && e.view && e.view.params && e.view.params.logout) {
             authenticationViewModel.set('logout', true);
         }

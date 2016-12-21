@@ -174,10 +174,19 @@
 #kendoUiMobileApp.km-widget .km-list .km-label-above textarea,
 #kendoUiMobileApp.km-widget textarea {
     left: 0;
-    float: left;
+    float: none;
     width: 100%;
     height: 100px;
     resize: vertical;
+}
+
+
+/*
+Fields
+*/
+
+#kendoUiMobileApp label.field {
+    display: block;
 }
 
 
@@ -309,8 +318,7 @@
     margin-top: 0.5em;
 }
 
-#kendoUiMobileApp .masterDetailView li:not(.form-content-item) > div:not(.image-with-text),
-#kendoUiMobileApp .masterDetailView li:not(.detail-content-item) > div:not(.image-with-text) {
+#kendoUiMobileApp .masterDetailView li:not(.form-content-item) > .field {
     margin-top: 0.5em;
     margin-bottom: 0.5em;
 }
@@ -424,6 +432,11 @@
     border-radius: 3px;
 }
 
+#kendoUiMobileApp .km-modalview-root .k-animation-container {
+    height: 100% !important;
+    width: 100% !important;
+}
+
 #kendoUiMobileApp .km-modalview-wrapper {
     position: fixed !important;
     top: 10%;
@@ -452,6 +465,14 @@
 
 
 /*End Multiple Selection Field*/
+
+#kendoUiMobileApp .locationEditor {
+    z-index: 1000;
+}
+
+#kendoUiMobileApp .mapView {
+    height: 300px;
+}
 
 
 /* START_CUSTOM_CODE_kendoUiMobileApp */
