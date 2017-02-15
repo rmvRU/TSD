@@ -1,0 +1,40 @@
+{
+  "_app": {
+    "navigationMore": "More",
+    "showMoreTitle": "Show More",
+    "qrCodeScan": "Scan"
+  },
+  "homeView": {
+    "title": "Home View"
+  },
+  "settingsView": {
+    "title": "Settings"
+  },
+  "authenticationView": {
+    "title": "Вход",
+    "authenticationViewModel": {
+      "emailLabel": "Логин",
+      "passwordLabel": "Пароль",
+      "signinLabel": "ОК",
+      "gotoRegisterLabel": "Рег",
+      "registerEmailLabel": "Email",
+      "registerPasswordLabel": "Password",
+      "registerNameLabel": "Name",
+      "registerLabel": "Register",
+      "gotoSigninLabel": "Sign In"
+    }
+  },
+  "pmTask": {
+    "title": "Транспортные Задания",
+    "pmTaskModel": {
+      "detailHeaderFieldValue": "Detail"
+    }
+  },
+  "barcodeInfoView": {
+    "title": "ШК Инфо",
+    "pmTaskModel": {
+      "detailHeaderFieldValue": "Detail"
+    }
+  }
+
+}

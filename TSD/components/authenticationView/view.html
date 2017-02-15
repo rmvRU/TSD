@@ -1,66 +1,49 @@
-<div data-role="view" data-title="Вход" data-layout="main-nonav" data-model="app.authenticationView" data-show="app.authenticationView.onShow" data-after-show="app.authenticationView.afterShow" id="authenticationViewScreen" class="screen">
+<div data-role="view" data-title="View" data-layout="main-nonav" data-model="app.authenticationView" data-show="app.authenticationView.onShow"
+    data-after-show="app.authenticationView.afterShow" id="authenticationViewScreen" class="screen">
     <div class="signin-view screen__content screen__content--signin">
         <form>
             <ul data-role="listview" data-style="inset">
-                <li>
-                    <label>Логин
+                <li> <label><span data-bind="text: strings.authenticationView.authenticationViewModel.emailLabel"></span>
                         <input type="email" data-bind="value: authenticationViewModel.email" required autofocus>
-                    </label>
-                </li>
-                <li>
-                    <label>Пароль
+                    </label> </li>
+                <li> <label><span data-bind="text: strings.authenticationView.authenticationViewModel.passwordLabel"></span>
                         <input type="password" data-bind="value: authenticationViewModel.password" required>
-                    </label>
-                </li>
+                    </label> </li>
             </ul>
-
             <div class="button-group button-group-vertical">
-                <a data-role="button" class="primary" data-bind="events: { click: authenticationViewModel.signin }">ОК</a>
-
-                <a data-role="button" data-bind="events: { click: authenticationViewModel.toggleView }">Рег</a>
-
-            </div>
-
-            <span class="status" data-bind="text: authenticationViewModel.errorMessage"></span>
-        </form>
+                <a data-role="button" class="primary" data-bind="events: { click: authenticationViewModel.signin }, buttonText: strings.authenticationView.authenticationViewModel.signinLabel"></a>
+                <a data-role="button" data-bind="events: { click: authenticationViewModel.toggleView }, buttonText: strings.authenticationView.authenticationViewModel.gotoRegisterLabel"></a>
+            </div> <span class="status" data-bind="text: authenticationViewModel.errorMessage"></span> </form>
     </div>
     <div class="signup-view screen__content screen__content--signup" style="display:none;">
         <form>
             <ul data-role="listview" data-style="inset">
-                <li>
-                    <label>Email
+                <li> <label><span data-bind="text: strings.authenticationView.authenticationViewModel.registerEmailLabel"></span>
                         <input type="email" data-bind="value: authenticationViewModel.email" required>
-                    </label>
-                </li>
-                <li>
-                    <label>Password
+                    </label> </li>
+                <li> <label><span data-bind="text: strings.authenticationView.authenticationViewModel.registerPasswordLabel"></span>
                         <input type="password" data-bind="value: authenticationViewModel.password">
-                    </label>
-                </li>
-                <li>
-                    <label>Name
+                    </label> </li>
+                <li> <label><span data-bind="text: strings.authenticationView.authenticationViewModel.registerNameLabel"></span>
                         <input type="text" data-bind="value: authenticationViewModel.displayName">
-                    </label>
-                </li>
+                    </label> </li>
             </ul>
             <div class="button-group button-group-vertical">
-                <a class="primary" data-role="button" data-bind="events: { click: authenticationViewModel.register }">Register</a>
-                <a data-role="button" data-bind="events: { click: authenticationViewModel.toggleView }">Sign In</a>
-            </div>
-
-            <span class="status" data-bind="text: authenticationViewModel.errorMessage"></span>
-        </form>
+                <a class="primary" data-role="button" data-bind="events: { click: authenticationViewModel.register }, buttonText: strings.authenticationView.authenticationViewModel.registerLabel"></a>
+                <a data-role="button" data-bind="events: { click: authenticationViewModel.toggleView }, buttonText: strings.authenticationView.authenticationViewModel.gotoSigninLabel"></a>
+            </div> <span class="status" data-bind="text: authenticationViewModel.errorMessage"></span> </form>
     </div>
-    <div class="offline" align="center" style="display:none;">
-        You are currently offline. Before using this app in offline mode you must initialize it while you are online
-    </div>
+    <div class="offline" align="center" style="display:none;"> You are currently offline. Before using this app in offline mode you must initialize it while you are online </div>
     <!-- START_CUSTOM_CODE_authenticationViewModel -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
     <!-- END_CUSTOM_CODE_authenticationViewModel -->
-
+    <header data-role="header">
+        <div data-role="navbar" class="header-text"> <span data-bind="text: strings.authenticationView.title"></span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer"
+                data-align="left" data-icon="drawer-button"></a>
+        </div>
+    </header>
     <!-- START_CUSTOM_CODE_authenticationView -->
     <!-- Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes -->
-
     <!-- END_CUSTOM_CODE_authenticationView -->
 </div>

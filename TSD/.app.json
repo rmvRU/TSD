@@ -43,22 +43,53 @@
       ],
       "title": "Вход",
       "addToNavigation": false
+    },
+    {
+      "type": "kendo-ui-mobile:view",
+      "name": "pmTask",
+      "components": [
+        {
+          "type": "kendo-ui-mobile:editableList",
+          "listExtraFields": [],
+          "detailExtraFields": [],
+          "addScreenExtraFields": [],
+          "editScreenExtraFields": [],
+          "components": [],
+          "name": "pmTaskModel",
+          "dataProvider": "json",
+          "collection": "",
+          "headerField": "Text",
+          "addItemForm": false,
+          "editItemForm": false,
+          "deleteItemButton": false,
+          "pullToRefresh": false,
+          "endlessScroll": false,
+          "isMapView": false,
+          "serverSideSorting": false,
+          "serverSidePaging": false,
+          "detailHeaderFieldSource": "static",
+          "detailHeaderFieldValue": "Detail"
+        }
+      ],
+      "title": "Транспортные Задания",
+      "addToNavigation": true,
+      "icon": "organize"
     }
   ],
   "dataProviders": [
     {
       "type": "kendo-ui-mobile:dataProvider",
       "name": "json",
-      "title": "JSON Data Service",
       "source": "json",
-      "url": "http://10.8.1.68:8904/"
+      "url": "http://10.8.1.68:8904/",
+      "title": "JSON Data Service"
     }
   ],
   "name": "kendoUiMobileApp",
   "navigation": "drawer",
   "view": "authenticationView",
-  "skin": "nova",
-  "skinMainColor": "#32364c",
+  "skin": "flat",
+  "skinMainColor": "#1a1a1a",
   "skinTextColor": "#ffffff",
-  "skinAccentColor": "#ff4350"
+  "skinAccentColor": "#10c4b2"
 }

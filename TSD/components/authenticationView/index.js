@@ -4,6 +4,7 @@ app.authenticationView = kendo.observable({
     onShow: function() {},
     afterShow: function() {}
 });
+app.localization.registerView('authenticationView');
 
 // START_CUSTOM_CODE_authenticationView
 // Add custom code here. For more information about custom code, see http://docs.telerik.com/platform/screenbuilder/troubleshooting/how-to-keep-custom-code-changes
@@ -19,24 +20,17 @@ app.authenticationView = kendo.observable({
             validateData: function(data) {
                 var model = authenticationViewModel;
 
-                if (!data.email && !data.password) {
-                    model.set('errorMessage', 'Missing credentials.');
-                    return false;
-                }
-
                 if (!data.email) {
-                    model.set('errorMessage', 'Missing username or email.');
+                    model.set('errorMessage', 'Введите логин');
                     return false;
                 }
 
-                if (!data.password) {
-                    model.set('errorMessage', 'Missing password.');
-                    return false;
-                }
 
                 return true;
             },
-            signin: function() {},
+            signin: function() {
+                alert('signing in')
+                                     },
             register: function() {},
             toggleView: function() {
                 var model = authenticationViewModel;

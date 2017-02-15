@@ -1,0 +1,35 @@
+<div id="pmTask" data-role="view" data-show="show" data-title="Транспортные Задания">
+    <header data-role="header">
+        <div data-role="navbar" class="header-text"> <span>Транспортные Задания</span>
+            <a data-role="button" href="#appDrawer" data-rel="drawer" data-align="left" data-icon="drawer-button"></a>
+            <a data-click="show" data-role="button" data-align="right" data-icon="refresh"></a>
+        </div>
+        <div id="dialog_Container">
+                    <input style="width:80%; height: 30px; margin: 4px 3% 4px 3%; padding-left:6px; padding-right:6px;" type="text" value="Text" onChange="alert('zzz')"/>
+        </div>
+    </header>
+    <ul id="list" data-role="listview" data-source="app.pmTask.dataSource" data-template="tmp"></ul>
+    <div data-role="footer">
+        <div id="tabstrip" data-role="tabstrip" data-select="onSelect"> <a>Доступные </a> <a>Назнач.</a> <a>Корзина</a> <a>Отлож</a> </div>
+    </div>
+    <ul data-role="actionsheet" id="userActions"  data-cancel="Отмена">
+    </ul>
+</div>
+<script id="tmp" type="text/x-kendo-template">
+    <p> #if (assigned==1){# <b>
+    #}#
+         <a href="" onClick="app.showBarcodeInfo('#:bin#');return(false);"> #: bin #</a> (#:psn#)<span>-> #: to_zone_desc #</span> 
+         <span style="float:right"><a data-role="button" data-click="list_showActions" data_idx="#:idx#">...</a></span>
+         </p>
+    <p><span style="font-size:70%;float:left">#:project#</span><span style="font-size:70%;float:right">#: reason_code # </span>
+    #if (assigned==1){#
+        </b> #}# </p>
+</script>
+<script id="tmp_old" type="text/x-kendo-template">
+    <p>
+        <a data-role="button" data-align="left" data-icon="drawer-button"></a> #: bin # (#:psn#)<span>-> #: to_zone_desc #</span> </p>
+    <p><span style="font-size:70%;float:left">#:project#</span><span style="font-size:70%;float:right">#: reason_code # </span></p>
+</script>
+<script id="dialog_Container_Template" type="text/x-kendo-template"> 
+                    <input style="width:80%; height: 40px; margin: 4px 3% 4px 3%; padding-left:6px; padding-right:6px;font-size:6vmin", type="text" value="" placeholder="#:caption#" onChange="app.dialog.processDialogInput(this)"/>
+                </script>

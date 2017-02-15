@@ -1,15 +1,85 @@
-function PmTask(url) {
-    this.url = url;
-    this.connector = new _connector(url);
-    this.pm_getTasks = function () {
+'use strict';
+
+
+function _getArgs(func) {
+    // First match everything inside the function argument parens.
+    var args = func.toString().match(/function\s.*?\(([^)]*)\)/)[1];
+
+    // Split the arguments string into an array comma delimited.
+    return args.split(',').map(function (arg) {
+        // Ensure no inline comments are parsed and trim the whitespace.
+        return arg.replace(/\/\*.*\*\//, '').trim();
+    }).filter(function (arg) {
+        // Ensure no undefined values are added.
+        return arg;
+    });
+};
+
+
+
+function PmTask() {
+    app.resource = "RES000183";
+    this.connector = new _connector(app.service_url, this);
+    var params = [
+        { name: "resource", type: "c", value: app.resource }
+    ];
+    this.cancel_reasons = this.connector.execute_sp('pm_tsd_GetReasons', params, true);
+    console.log(this.cancel_reasons);
+    this.pm_getTasks = function (barcode, current_bin) {
         var params = [
-            {name:"resource", type:"c", value:"RES000183"}
+            { name: "resource", type: "c", value: app.resource }
         ];
+        var names = _getArgs(this.pm_getTasks);
+        for (var i = 0; i < arguments.length; i++) {
+            var a = arguments[i];
+            params.push(new _sql_param(names[i], 'c', a));
+        }
+
         this.data = this.connector.execute_sp('pm_tsd_GetTasks', params, true);
+        this.lines = this.data.lines;
+        this.list_lines = new $(this.lines).filter(function (index) { return (this.exec_status == 1 && index < 50) });
+        this.assign_lines = new $(this.lines).filter(function (index) { return (this.exec_status == 2) });
+        this.basket_lines = new $(this.lines).filter(function (index) { return (this.exec_status == 3) });
+        this.unavailable_lines = new $(this.lines).filter(function (index) { return (this.exec_status == 0) });
+        $(this).trigger('OnLoad');
+    };
+    this.pm_line_ChangeStatus = function (line, new_status) {
+        if (typeof (line.to_psn) == 'undefined') { line.to_psn = '' };
+        if (typeof (line.to_bin) == 'undefined') { line.to_bin = '' };
+        if (typeof (line.confirm_barcode) == 'undefined') { line.confirm_barcode = '' };
+        if (typeof (line.cancel_reason) == 'undefined') { line.cancel_reason = '' };
+        var params = [
+            { name: "resourceNo", type: "c", value: app.resource }
+            , { name: "entry_no", type: "i", value: line.entry_no }
+            , { name: "new_status", type: "i", value: new_status }
+            , { name: "to_bin", type: "c", value: line.to_bin }
+            , { name: "to_psn", type: "c", value: line.to_psn }
+            , { name: "confirm_barcode", type: "c", value: line.confirm_barcode }
+            , { name: "cancel_reason", type: "c", value: line.cancel_reason }
+        ];
+        var retVal = this.connector.execute_sp('pm_line_ChangeStatus', params, false);
+        return (retVal);
+    };
+}
+
+
+function sql_common() {
+    this.connector = new _connector(app.service_url, this);
+    this.op_barcodeInfo = function (barcode) {
+        var params = [
+            { name: "resourceNo", type: "c", value: app.resource }
+            , { name: "barcode", type: "c", value: barcode }]
+        return this.connector.execute_sp('op_barcodeInfo', params, true);
     };
 
+    this.pm_tsd_GetBins_ByMask = function (mask) {
+        var params = [
+            { name: "resource", type: "c", value: app.resource }
+            , { name: "mask", type: "c", value: mask }]
+        return this.connector.execute_sp('pm_tsd_GetBins_ByMask', params, true);
+    };
+};
 
-}
 
 
 function hackedLogin(url) {
@@ -21,7 +91,7 @@ function hackedLogin(url) {
         ], true
     )
     */
-    url+='/login.asp?login=0183';
+    url += '/login.asp?login=0183';
     var d = c._getData(url, true);
     return d.lines;
 }
@@ -33,25 +103,39 @@ function _sql_param(name, type, value) {
     return this
 }
 
-function _connector(url) {
+function _connector(url, parent) {
     this.url = url;
+    this.parent = parent;
+    this.open_rs = function (query) {
+        alert('not released');
+    };
     this.execute_sp = function (name, params, getData) {
+        app.disableInput(true);
         var url = this.url;
         url += '/sql_wrapper.asp?__sp=' + name;
         for (var i = 0; i < params.length; i++) {
             url += '&_' + params[i].type + params[i].name + '=' + params[i].value;
         };
         console.log(url);
-
         if (getData) {
+            app.disableInput(false);
             return this._getData(url);
         }
-        else
-            return this._get(url);
+        else {
+            try {
+                app.disableInput(false);
+                return this._runCommand(url);
+            }
+            catch (err) {
+                app.disableInput(false);
+                alert(err.message)
+            }
+        }
     };
 
     this._runCommand = function (url) {
-        var request = $.ajax({ url: url, async: true });
+        var self = this;
+        var request = $.ajax({ type: 'POST', url: url, async: false });
         request.done(function (data) {
             self.returnedData = data;
             self.updateResult = self.processUpdateResults(data);
@@ -61,6 +145,9 @@ function _connector(url) {
             self.lastError = "error on loading resource " + url;
             self.updateResult = false;
         });
+        if (!this.updateResult) {
+            $(this.parent).trigger('OnError', this.lastError);
+        }
         return this.updateResult;
     };
     this._getData = function (url) {
@@ -97,7 +184,7 @@ function DataTable() {
     this.serverFilters = [];
     this.filters = [];
     this.async = false;
-    currentIndex = 0;
+    this.currentIndex = 0;
     this.clearFilters = function () {
         this.lines.length = 0;
         this.serverFilters.length = 0;
@@ -173,6 +260,7 @@ function DataTable() {
         //alert(url);
         //$(this).trigger('beforeLoading');	
         request.done(function (data) {
+            //console.dir(data);
             //if (self.testMode==true) alert(data);;//!!!
             if (checkForErrors(data) == true)
                 self.getDataSuccess = self.serialize(data);
@@ -181,6 +269,7 @@ function DataTable() {
             //$(self).trigger('afterLoading');
         });
         request.fail(function (data) {
+            //console.dir(data);
             self.lastError = "error on loading resource " + url;
             console.log(self.lastError)
             $(self).trigger('onError');
@@ -209,19 +298,20 @@ function DataTable() {
 
     this.serialize = function (data) {
         this.lines.length = 0;
-        rows = $(data).find('row');
+        var rows = $(data).find('row');
         for (var i = 0; i < rows.length; i++) {
-            this.lines.push(new this.serializeRow(rows[i]));
+            this.lines.push(new this.serializeRow(rows[i], i));
         }
         $(this).trigger('onSerializable');
         //alert('rows ' + rows.length + ' lines ' + this.lines.length);
         return true;
     };
-    this.serializeRow = function (row) {
+    this.serializeRow = function (row, idx) {
         for (var j = 0; j < row.attributes.length; j++) {
             var attr = row.attributes[j];
             this[attr.name] = attr.value;
         }
+        this.idx=idx;
         return (this);
     }
     this.next = function (step) { };
